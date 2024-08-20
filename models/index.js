@@ -1,3 +1,4 @@
+
 const Category = require('./Category');
 const Note = require('./Note');
 const RecurringTransaction = require('./RecurringTransaction');
@@ -65,3 +66,4 @@ User.hasMany(Category, {
 });
 
 module.exports = { User, Note, Transaction, RecurringTransaction, Category };
+
