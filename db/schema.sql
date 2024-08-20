@@ -1,3 +1,4 @@
+-- Drop the database if it exists
 DROP DATABASE IF EXISTS cashbook_db;
 CREATE DATABASE cashbook_db;
 \c cashbook_db;
@@ -19,34 +20,22 @@ CREATE TABLE Categories (
     Name VARCHAR(50) NOT NULL
 );
 
--- Create Notes Table
+-- Create Transactions Table (handles both incoming and outgoing)
+CREATE TABLE Transactions (
+    Id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    UserId UUID REFERENCES Users(Id),
+    Name VARCHAR(100) NOT NULL,
+    Amount DECIMAL(10, 2) NOT NULL,
+    Category UUID REFERENCES Categories(Id),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Type VARCHAR(10) CHECK (Type IN ('Incoming', 'Outgoing')) NOT NULL -- Specify the type of transaction
+);
+
+-- Create Notes Table (linked to Transactions)
 CREATE TABLE Notes (
     Id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    -- UserId UUID REFERENCES Users(Id),
-    TransactionId UUID, -- Will reference either Incoming or Outgoing transactions
+    TransactionId UUID UNIQUE REFERENCES Transactions(Id),
     Text TEXT
-);
-
--- Create Incoming_Transactions Table
-CREATE TABLE Incoming_Transactions (
-    Id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    UserId UUID REFERENCES Users(Id),
-    Name VARCHAR(100) NOT NULL,
-    Amount DECIMAL(10, 2) NOT NULL,
-    Category UUID REFERENCES Categories(Id),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Notes UUID REFERENCES Notes(Id)
-);
-
--- Create Outgoing_Transactions Table
-CREATE TABLE Outgoing_Transactions (
-    Id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    UserId UUID REFERENCES Users(Id),
-    Name VARCHAR(100) NOT NULL,
-    Amount DECIMAL(10, 2) NOT NULL,
-    Category UUID REFERENCES Categories(Id),
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Notes UUID REFERENCES Notes(Id)
 );
 
 -- Create Recurring_Transactions Table
