@@ -1,5 +1,4 @@
 const { Model, DataTypes } = require('sequelize');
-//const sequelize = require('../config/connection');
 
 class Transaction extends Model {}
 
@@ -23,30 +22,40 @@ Transaction.init(
             allowNull: false,
         },
         amount: {
-            type: DataType.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         category: {
             type: DataTypes.STRING,
             references: {
                 model: 'category',
-                key: 'category_id'
+                key: 'category_id',
             },
         },
         notes: {
             type: DataTypes.STRING,
             references: {
                 model: 'note',
-                key: 'note_id'
-            }
-        }
+                key: 'note_id',
+            },
+        },
+        // New field: transactionType (incoming or outgoing)
+        transactionType: {
+            type: DataTypes.ENUM('incoming', 'outgoing'),
+            allowNull: false,
+        },
+        // New field: recurringTransaction (true or false)
+        recurringTransaction: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
     },
     {
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: 'transaction',
+        sequelize,
+        timestamps: false,
+        freezeTableName: true,
+        underscored: true,
+        modelName: 'transaction',
     }
 );
 
