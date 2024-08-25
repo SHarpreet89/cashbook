@@ -1,14 +1,14 @@
 [
     {
-      "username": "Sal",
+      "username": "Sal@testsite.com",
       "password": "password12345"
     },
     {
-      "username": "Lernantino",
+      "username": "Lernantino@testsite.com",
       "password": "password12345"
     },
     {
-      "username": "Amiko",
+      "username": "Amiko@testsite.com",
       "password": "password12345"
     }
   ]
