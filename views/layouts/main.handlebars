@@ -13,6 +13,8 @@
                 <li class='li-inline nav-item'><a href='/'>Home</a></li>
                 <li class='li-inline nav-item'><a href='/dashboard'>Dashboard</a></li>
                 {{#if loggedIn}}
+                    <li class='li-inline nav-item'><a href='#' id='transactions'>Transactions</a></li>
+                    <li class='li-inline nav-item'><a href='#' id='settings'>Settings</a></li>
                     <li class='li-inline nav-item'><a href='#' id='logout'>Logout</a></li>
                 {{else}}
                     <li class='li-inline nav-item'><a href='/login'>Login</a></li>
@@ -33,6 +35,7 @@
         </footer>
 
         {{#if loggedIn}}
+
             <script src='/js/logout.js'></script>
          {{/if}}
     </body>

@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-//const sequelize = require('../config/connection');
+const sequelize = require('../config/connection');
 
 class RecurringTransaction extends Model {}
 
@@ -23,7 +23,7 @@ RecurringTransaction.init(
             allowNull: false,
         },
         amount: {
-            type: DataType.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         category: {
