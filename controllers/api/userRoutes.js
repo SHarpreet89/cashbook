@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const userData = await User.create(req.body);
 
     req.session.save(() => {
-      req.session.user_id = userData.id;
+      req.session.email = userData.email;
       req.session.logged_in = true;
 
       res.status(200).json(userData);
@@ -20,10 +20,12 @@ router.post('/', async (req, res) => {
 
 // If a POST request is made to /api/users/login, the function checks to see if the user information matches the information in the database and logs the user in. If correct, the user ID and logged-in state are saved to the session within the request object.
 router.post('/login', async (req, res) => {
+  console.log('Attempting to API ROUTE login user:', req.body.email);
   try {
     const userData = await User.findOne({ where: { email: req.body.email } });
 
     if (!userData) {
+      console.log('No user found with that email.');
       res
         .status(400)
         .json({ message: 'Incorrect email or password, please try again' });
@@ -33,23 +35,44 @@ router.post('/login', async (req, res) => {
     const validPassword = await userData.checkPassword(req.body.password);
 
     if (!validPassword) {
+      console.log('Incorrect password for that user.');
       res
         .status(400)
         .json({ message: 'Incorrect email or password, please try again' });
       return;
     }
 
-    req.session.save(() => {
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err); // Debug session saving errors
+        return res.status(500).json({ message: 'Failed to save session' });
+      }
+
       req.session.user_id = userData.id;
       req.session.logged_in = true;
-      
-      res.json({ user: userData, message: 'You are now logged in!' });
-    });
 
+      console.log('Session saved successfully:', {
+        sessionId: req.sessionID,
+        userId: req.session.user_id,
+        loggedIn: req.session.logged_in,
+      });
+
+      console.log('User logged in successfully:', {
+        userId: userData.id,
+        firstName: userData.first_name,
+      }); // Log when user logs in successfully
+
+      res.status(200).json({
+        userData,
+        message: 'You are now logged in!',
+      });
+    });
   } catch (err) {
+    console.error('Login error:', err);  // Log error during login
     res.status(400).json(err);
   }
 });
+
 
 // If a POST request is made to /api/users/logout, the function checks the logged_in state in the request.session object and destroys that session if logged_in is true.
 router.post('/logout', (req, res) => {
