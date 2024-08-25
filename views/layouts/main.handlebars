@@ -8,6 +8,17 @@
     </head>
 
     <body>
+        <nav class='navbar'>
+            <ul class='flex-row'>
+                <li class='li-inline nav-item'><a href='/'>Home</a></li>
+                <li class='li-inline nav-item'><a href='/dashboard'>Dashboard</a></li>
+                {{#if loggedIn}}
+                    <li class='li-inline nav-item'><a href='#' id='logout'>Logout</a></li>
+                {{else}}
+                    <li class='li-inline nav-item'><a href='/login'>Login</a></li>
+                {{/if}}
+            </ul>
+        </nav>
         <header>
             <h1>Welcome to CashBook!</h1>
             <p>We are a one stop shop when it comes to managing your finances! Log in or sign up now to find out more information!</p>
@@ -20,5 +31,13 @@
         <footer>
             <p>&copy; 2024 Cashbook. All Rights Reserved</p>
         </footer>
+
+        {{#if loggedIn}}
+            <script src='/js/logout.js'></script>
+         {{/if}}
     </body>
+
+
+
+
 </html>
