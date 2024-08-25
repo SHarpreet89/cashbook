@@ -1,32 +1,32 @@
-
 const Category = require('./Category');
 const Note = require('./Note');
-const RecurringTransaction = require('./RecurringTransaction');
 const Transaction = require('./Transaction');
 const User = require('./User');
 
+// User-Transaction Relations
 User.hasMany(Transaction, {
   foreignKey: 'user_id',
   onDelete: 'CASCADE',
 });
 
 Transaction.belongsTo(User, {
-  foreignKey: 'transaction_id',
-  onDelete: 'CASCADE',
+  foreignKey: 'user_id',
 });
 
+// Transaction-Note Relations
 Transaction.hasOne(Note, {
   foreignKey: 'transaction_id',
-  onDelete: 'CASCADE',
+  onDelete: 'SET NULL',  // If the note is deleted, the transaction will have NULL as note_id
 });
 
-Note.hasOne(Transaction, {
-  foreignKey: 'note_id',
-  onDelete: 'CASCADE',
-});
-
-Transaction.belongsTo(Category, {
+Note.belongsTo(Transaction, {
   foreignKey: 'transaction_id',
+  onDelete: 'CASCADE',
+});
+
+// Transaction-Category Relations
+Transaction.belongsTo(Category, {
+  foreignKey: 'category_id',
   onDelete: 'CASCADE',
 });
 
@@ -35,35 +35,24 @@ Category.hasMany(Transaction, {
   onDelete: 'CASCADE',
 });
 
+// User-Note Relations
 User.hasMany(Note, {
   foreignKey: 'user_id',
   onDelete: 'CASCADE',
 });
 
 Note.belongsTo(User, {
-  foreignKey: 'note_id',
-  onDelete: 'CASCADE',
-});
-
-RecurringTransaction.belongsTo(User, {
-  foreignKey: 'recurringtransaction_id',
-  onDelete: 'CASCADE',
-});
-
-User.hasMany(RecurringTransaction, {
   foreignKey: 'user_id',
-  onDelete: 'CASCADE',
 });
 
-Category.hasOne(User, {
-  foreignKey: 'category_id',
-  onDelete: 'CASCADE',
-});
-
+// User-Category Relations
 User.hasMany(Category, {
   foreignKey: 'user_id',
-  onDelete: 'CASCADE'
+  onDelete: 'CASCADE',
 });
 
-module.exports = { User, Note, Transaction, RecurringTransaction, Category };
+Category.belongsTo(User, {
+  foreignKey: 'user_id',
+});
 
+module.exports = { User, Note, Transaction, Category };

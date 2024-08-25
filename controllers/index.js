@@ -1,9 +1,15 @@
 const router = require('express').Router();
 
-// Import routes
-const homeRoutes = require('./api/homeRoutes');
+const homeRoutes = require('./homeRoutes');
+const apiRoutes = require('./api/');
+const dashboardRoutes = require('./dashboardRoutes');
+const transactionRoutes = require('./transactionRoutes');
+const settingsRoutes = require('./settingsRoutes');
 
-// Use the home routes
 router.use('/', homeRoutes);
+router.use('/api', apiRoutes);
+router.use('/dashboard', dashboardRoutes);
+router.use('/transactions', transactionRoutes);
+router.use('/settings', settingsRoutes);
 
 module.exports = router;

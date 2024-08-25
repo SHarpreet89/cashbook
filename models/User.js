@@ -12,17 +12,16 @@ User.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
     },
     first_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     last_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
@@ -37,9 +36,9 @@ User.init(
       allowNull: false,
     },
     balance: {
-        type: DataTypes.DECIMAL(10, 2),
-        defaultvalue: 0.00,
-        allowNull: false,
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0.00,
+      allowNull: false,
     },
   },
   {
