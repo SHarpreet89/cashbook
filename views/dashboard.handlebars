@@ -1,0 +1,28 @@
+<main class="container">
+    <section class="row">
+        <div class="card">
+            <form>
+                <div class="form-group">
+                    <button type="button">Add Transaction</button>
+                </div>
+            </form>
+            {{!-- These divs need suitable css (try to get view engine done first) --}}
+            <div>
+                <h2>Total Balance</h2>
+                <p>{{total_balance}}</p>
+            </div>
+            <div>
+                <h2>Transaction History</h2>
+                <ul>
+                    {{#each transactions}}
+                    <li>{{this}}</li> {{!-- this model needs to be destructured --}}
+                    {{/each}}
+                </ul>
+            </div>
+            <div>
+                <h2>Transaction Graph</h2>
+                {{!-- graph goes here --}}
+            </div>
+        </div>
+    </section>
+</main>
