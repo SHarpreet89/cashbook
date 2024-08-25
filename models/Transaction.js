@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
 class Transaction extends Model {}
 
@@ -25,7 +26,7 @@ Transaction.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        category: {
+        transactionCategory: {
             type: DataTypes.STRING,
             references: {
                 model: 'category',
