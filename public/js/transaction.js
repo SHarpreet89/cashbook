@@ -18,4 +18,4 @@ const newFormHandler = async (event) => {
   document.location.replace('/dashboard');
 };
 
-document.querySelector('#add-transaction').addEventListener('submit', newFormHandler);
+document.querySelector('#submit-transaction').addEventListener('submit', newFormHandler);
