@@ -3,13 +3,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, inital-scale=1.0">
         <title>CashBook App</title>
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
         <link rel="icon" type="image/x-icon" href="assets/images/favicon.svg">
     </head>
 
     <body>
+        <header class="fixed-navbar">
+            <h1 class="text-2xl">Welcome to CashBook!</h1>
         <nav class='navbar'>
-            <ul class='flex-row'>
+            <ul class='flex-row' id="menu-nav">
                 <li class='li-inline nav-item'><a href='/'>Home</a></li>
                 {{#if loggedIn}}
                     <li class='li-inline nav-item'><a href='/dashboard'>Dashboard</a></li>
@@ -21,9 +24,6 @@
                 {{/if}}
             </ul>
         </nav>
-        <header>
-            <h1>Welcome to CashBook!</h1>
-            <p>We are a one stop shop when it comes to managing your finances! Log in or sign up now to find out more information!</p>
         </header>
         <div>
             {{{body}}}
@@ -38,5 +38,4 @@
             <script src='/js/logout.js'></script>
          {{/if}}
     </body>
-    
 </html>
