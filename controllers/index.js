@@ -1,8 +1,15 @@
 const router = require('express').Router();
-// Import the routes. This is how we make our routes modular.
-const userRoutes = require('./api/userRoutes'); 
 
-// When a request is made to the /users or /projects path, it will be directed to the index.js in the /users or /projects folder.
-router.use('/users', userRoutes);
+const homeRoutes = require('./homeRoutes');
+const apiRoutes = require('./api/');
+const dashboardRoutes = require('./dashboardRoutes');
+const transactionRoutes = require('./transactionRoutes');
+const settingsRoutes = require('./settingsRoutes');
+
+router.use('/', homeRoutes);
+router.use('/api', apiRoutes);
+router.use('/dashboard', dashboardRoutes);
+router.use('/transactions', transactionRoutes);
+router.use('/settings', settingsRoutes);
 
 module.exports = router;
