@@ -1,0 +1,138 @@
+[
+    {
+      "user_id": 1,
+      "name": "Salary Payment",
+      "amount": 3000.00,
+      "category_id": 1,
+      "transactionType": "incoming",
+      "recurringTransaction": true,
+      "date": "2024-08-01"
+    },
+    {
+      "user_id": 1,
+      "name": "Grocery Shopping",
+      "amount": 150.00,
+      "category_id": 2,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-05"
+    },
+    {
+      "user_id": 1,
+      "name": "Netflix Subscription",
+      "amount": 15.99,
+      "category_id": 5,
+      "transactionType": "outgoing",
+      "recurringTransaction": true,
+      "date": "2024-08-10"
+    },
+    {
+      "user_id": 1,
+      "name": "Electricity Bill",
+      "amount": 120.00,
+      "category_id": 4,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-15"
+    },
+    {
+      "user_id": 1,
+      "name": "Movie Tickets",
+      "amount": 50.00,
+      "category_id": 3,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-20"
+    },
+    {
+      "user_id": 2,
+      "name": "Freelance Payment",
+      "amount": 1200.00,
+      "category_id": 1,
+      "transactionType": "incoming",
+      "recurringTransaction": false,
+      "date": "2024-08-03"
+    },
+    {
+      "user_id": 2,
+      "name": "Grocery Shopping",
+      "amount": 90.00,
+      "category_id": 2,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-08"
+    },
+    {
+      "user_id": 2,
+      "name": "Spotify Subscription",
+      "amount": 9.99,
+      "category_id": 5,
+      "transactionType": "outgoing",
+      "recurringTransaction": true,
+      "date": "2024-08-12"
+    },
+    {
+      "user_id": 2,
+      "name": "Water Bill",
+      "amount": 40.00,
+      "category_id": 4,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-18"
+    },
+    {
+      "user_id": 2,
+      "name": "Concert Tickets",
+      "amount": 80.00,
+      "category_id": 3,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-23"
+    },
+    {
+      "user_id": 3,
+      "name": "Part-time Work",
+      "amount": 600.00,
+      "category_id": 1,
+      "transactionType": "incoming",
+      "recurringTransaction": false,
+      "date": "2024-08-05"
+    },
+    {
+      "user_id": 3,
+      "name": "Grocery Shopping",
+      "amount": 110.00,
+      "category_id": 2,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-09"
+    },
+    {
+      "user_id": 3,
+      "name": "Disney+ Subscription",
+      "amount": 12.99,
+      "category_id": 5,
+      "transactionType": "outgoing",
+      "recurringTransaction": true,
+      "date": "2024-08-11"
+    },
+    {
+      "user_id": 3,
+      "name": "Internet Bill",
+      "amount": 70.00,
+      "category_id": 4,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-19"
+    },
+    {
+      "user_id": 3,
+      "name": "Book Purchase",
+      "amount": 25.00,
+      "category_id": 3,
+      "transactionType": "outgoing",
+      "recurringTransaction": false,
+      "date": "2024-08-22"
+    }
+  ]
+  
