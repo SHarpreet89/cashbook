@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+const User = require('./User');  // Assuming User is defined in User.js
 
 class Transaction extends Model {}
 
@@ -27,6 +28,10 @@ Transaction.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
     category_id: {
       type: DataTypes.INTEGER,
       references: {
@@ -41,7 +46,7 @@ Transaction.init(
         model: 'note',
         key: 'id',
       },
-      onDelete: 'SET NULL', // If the note is deleted, the transaction will have a NULL note_id
+      onDelete: 'SET NULL',
     },
     transactionType: {
       type: DataTypes.ENUM('incoming', 'outgoing'),
@@ -60,5 +65,49 @@ Transaction.init(
     modelName: 'transaction',
   }
 );
+
+// Hooks for updating user balance
+Transaction.addHook('afterCreate', async (transaction, options) => {
+  const user = await User.findByPk(transaction.user_id);
+
+  if (transaction.transactionType === 'incoming') {
+    user.balance += parseFloat(transaction.amount);
+  } else if (transaction.transactionType === 'outgoing') {
+    user.balance -= parseFloat(transaction.amount);
+  }
+
+  await user.save();
+});
+
+Transaction.addHook('afterDestroy', async (transaction, options) => {
+  const user = await User.findByPk(transaction.user_id);
+
+  if (transaction.transactionType === 'incoming') {
+    user.balance -= parseFloat(transaction.amount);
+  } else if (transaction.transactionType === 'outgoing') {
+    user.balance += parseFloat(transaction.amount);
+  }
+
+  await user.save();
+});
+
+Transaction.addHook('afterUpdate', async (transaction, options) => {
+  const previousTransaction = transaction._previousDataValues;
+  const user = await User.findByPk(transaction.user_id);
+
+  if (previousTransaction.transactionType === 'incoming') {
+    user.balance -= parseFloat(previousTransaction.amount);
+  } else if (previousTransaction.transactionType === 'outgoing') {
+    user.balance += parseFloat(previousTransaction.amount);
+  }
+
+  if (transaction.transactionType === 'incoming') {
+    user.balance += parseFloat(transaction.amount);
+  } else if (transaction.transactionType === 'outgoing') {
+    user.balance -= parseFloat(transaction.amount);
+  }
+
+  await user.save();
+});
 
 module.exports = Transaction;

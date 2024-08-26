@@ -1,0 +1,27 @@
+[
+    { 
+      "name": "Salary", 
+      "global": true 
+    },
+    { 
+      "name": "Groceries", 
+      "global": true 
+    },
+    { 
+      "name": "Entertainment", 
+      "global": true 
+    },
+    { 
+      "name": "Utilities", 
+      "global": true 
+    },
+    { 
+      "name": "Subscriptions", 
+      "global": true 
+    },
+    { 
+      "name": "Miscellaneous", 
+      "global": true 
+    }
+  ]
+  

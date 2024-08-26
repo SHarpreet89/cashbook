@@ -1,4 +1,4 @@
-<main class="container"> {{!-- Do we need the main container in each handlebar? Or is just the div container enough? --}}
+<main class="container">
     <section class="row">
         <div class="card">
             <form>
@@ -6,16 +6,17 @@
                     <button type="button">Add Transaction</button>
                 </div>
             </form>
-            {{!-- These divs need suitable css (try to get view engine done first) --}}
             <div>
                 <h2>Total Balance</h2>
-                <p>{{total_balance}}</p>
+                <p>{{total_balance}}</p>  <!-- Ensure total_balance is passed correctly -->
             </div>
             <div>
                 <h2>Transaction History</h2>
                 <ul>
                     {{#each transactions}}
-                    <li>{{this}}</li> {{!-- this model needs to be destructured --}}
+                        <li>
+                            {{this.name}} - {{this.amount}} - {{this.transactionType}} - {{this.date}}
+                        </li>
                     {{/each}}
                 </ul>
             </div>

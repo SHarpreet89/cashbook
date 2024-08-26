@@ -13,6 +13,7 @@ Category.init(
     },
     user_id: {
       type: DataTypes.INTEGER,
+      allowNull: true, // Allow null for global categories
       references: {
         model: 'user',
         key: 'id',
@@ -23,6 +24,10 @@ Category.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    global: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false, // Indicates whether the category is global or user-specific
     },
   },
   {
