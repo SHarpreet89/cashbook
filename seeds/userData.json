@@ -3,18 +3,18 @@
     "first_name": "Sal",
     "last_name": "Test",
     "email": "Sal@test.com",
-    "password": "password12345"
+    "password": "123"
   },
   {
     "first_name": "Lernantino",
     "last_name": "Test",
     "email": "Lernantino@test.com",
-    "password": "password12345"
+    "password": "123"
   },
   {
     "first_name": "Amiko",
     "last_name": "Test",
     "email": "Amiko@test.com",
-    "password": "password12345"
+    "password": "123"
   }
 ]
