@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Page</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Transaction Details</h1>
+        <p>Fill in your expense details below</p>
+    </header>
+
+    <main class="container">
+
+        <section class="row" style="width: 75%;">
+            <article class="col-12">
+                <div class="card">
+                    <h2>Add More</h2>
+                    <form id="add-more-form">
+                        <div class="form-group">
+                            <label for="transaction-category">Category:</label>
+                            <select id="transaction-category">
+                                <option value="transfers">Transfers</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="food & drink">Food & Drink</option>
+                                <option value="insurance">Insurance</option>
+                                <option value="subscriptions">Subscriptions</option>
+                                <option value="other expenses">Other Expenses</option>
+                                <option value="education & training">Education & Training</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="services">Services</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="salary">Salary</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+            </article>
+
+        </section>
+
+        <section class="row" style="width: 75%;">
+            <article class="col-12">
+                <div class="card">
+                    <h2>Add Transaction Details</h2>
+                    <form id="transaction-details-form">
+                        <div class="form-group">
+                            <label for="transaction-amount">Amount:</label>
+                            <input type="number" id="transaction-amount" placeholder="Enter the transaction amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="transaction-date">Date:</label>
+                            <input type="date" id="transaction-date">
+                        </div>
+                    </form>
+                </div>
+
+            </article>
+
+        </section>
+
+        <section class="row" style="width: 75%;">
+            <article class="col-12">
+                <div class="card">
+                    <h2>Transaction Notes</h2>
+                    <form id="transaction-notes-form">
+                        <div class="form-group">
+                            <label for="transaction-notes">Notes:</label>
+                            <input type="text" id="transaction-notes" placeholder="Enter the transaction notes">
+                        </div>
+                    </form>
+                </div>
+
+            </article>
+
+        </section>
+
+        <section class="row" style="width: 50%; margin-top: 20px;">
+            <article class="col-12">
+                <button id="save-transaction" style="width: 100%;">Save Transaction</button>
+            </article>
+        </section>
+
+        <section class="row" style="width: 100%; margin-top: 20px;">
+            <article class="col-12">
+                <canvas id="expense-chart"></canvas>
+            </article>
+        </section>
+
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Cashbook. All Rights Reserved</p>
+    </footer>
+
+    <script src="public/js/transaction-chart.js"></script>
+    
+</body>
+</html>
