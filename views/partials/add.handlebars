@@ -1,21 +1,24 @@
 <div class="card"> {{!-- Do we need the main container in each handlebar? Or is just the div container enough? --}}
     <h2>Add Transaction</h2>
-    <form>
-        <div class="form-group">
+    <form id="add-transaction">
+        <div>
             <label for="transaction-name">Name:</label>
             <input type="text" id="transaction-name" placeholder="Enter transaction name">
         </div>
-        <div class="form-group">
+        <div>
             <label for="transaction-amount">Amount:</label>
             <input type="number" id="transaction-amount" placeholder="Enter transaction amount">
         </div>
-        <div class="form-group">
+        <div>
             <label for="transaction-category">Category:</label>
             <select id="transaction-category">
                 {{#each categories}}
                 <option value="{{this.name}}">{{this.name}}</option>
                 {{/each}}
             </select>
+        </div>
+        <div>
+        <input type="submit" id="submit-button" value="Submit">
         </div>
         {{!-- Recurring checkbox would go here (recurring value not in the model) --}}
     </form>
