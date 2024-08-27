@@ -102,60 +102,88 @@ Transaction.addHook('afterDestroy', async (transaction, options) => {
   await user.save();
 });
 
-Transaction.addHook('afterUpdate', async (transaction, options) => {
-  const previousTransaction = transaction._previousDataValues;
-  const user = await User.findByPk(transaction.user_id);
 
-  // Parse the previous and updated amounts as floats
-  const previousAmount = parseFloat(previousTransaction.amount);
-  const updatedAmount = parseFloat(transaction.amount);
+Transaction.addHook('beforeUpdate', async (transaction, options) => {
+  const t = await sequelize.transaction(); // Start a new transaction
 
-  // Log the previous and current amounts, and check if they are valid numbers
-  console.log('Previous transaction amount:', previousAmount, 'Type:', typeof previousAmount);
-  console.log('Updated transaction amount:', updatedAmount, 'Type:', typeof updatedAmount);
+  try {
+    // Fetch the user's current balance and the old transaction values before update
+    const previousTransaction = await Transaction.findByPk(transaction.id, { transaction: t });
+    const user = await User.findByPk(transaction.user_id, { transaction: t });
 
-  if (isNaN(previousAmount) || isNaN(updatedAmount)) {
-    console.error('Invalid transaction amounts detected. Previous:', previousAmount, 'Updated:', updatedAmount);
-    return;
+    if (!previousTransaction || !user) {
+      console.error('Could not fetch previous transaction or user data');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    const previousAmount = parseFloat(previousTransaction.amount);
+    const updatedAmount = parseFloat(transaction.amount);
+
+    // Ensure amounts and user balance are valid numbers
+    if (isNaN(previousAmount) || isNaN(updatedAmount)) {
+      console.error('Invalid transaction amounts detected. Previous:', previousAmount, 'Updated:', updatedAmount);
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    let currentBalance = parseFloat(user.balance);
+    if (isNaN(currentBalance)) {
+      console.error('User balance is NaN, unable to proceed.');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    // Logging key details before update
+    console.log('Transaction Edit Start:');
+    console.log(`User Balance Before Edit: ${currentBalance}`);
+    console.log(`Transaction ID: ${transaction.id}`);
+    console.log(`Previous Transaction Type: ${previousTransaction.transactionType}`);
+    console.log(`Previous Transaction Amount: ${previousAmount}`);
+    console.log(`Updated Transaction Type: ${transaction.transactionType}`);
+    console.log(`Updated Transaction Amount: ${updatedAmount}`);
+
+    // Revert the impact of the previous transaction
+    if (previousTransaction.transactionType === 'Credit') {
+      currentBalance -= previousAmount;
+      console.log(`Reverted Previous Credit of ${previousAmount}, New Balance: ${currentBalance}`);
+    } else if (previousTransaction.transactionType === 'Debit') {
+      currentBalance += previousAmount;
+      console.log(`Reverted Previous Debit of ${previousAmount}, New Balance: ${currentBalance}`);
+    }
+
+    // Apply the impact of the updated transaction
+    if (transaction.transactionType === 'Credit') {
+      currentBalance += updatedAmount;
+      console.log(`Applied New Credit of ${updatedAmount}, New Balance: ${currentBalance}`);
+    } else if (transaction.transactionType === 'Debit') {
+      currentBalance -= updatedAmount;
+      console.log(`Applied New Debit of ${updatedAmount}, New Balance: ${currentBalance}`);
+    }
+
+    // Ensure the user balance is a valid number before saving
+    if (isNaN(currentBalance)) {
+      console.error('Final user balance is NaN, aborting save.');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    // Log the final user balance after the transaction edit
+    console.log(`User Balance After Edit: ${currentBalance}`);
+
+    // Set the new balance in the user object and save it
+    user.balance = currentBalance;
+    await user.save({ transaction: t });
+
+    // Commit the transaction
+    await t.commit();
+
+    console.log('Transaction Edit Completed and User Balance Saved');
+
+  } catch (error) {
+    console.error('Error updating user balance after transaction update:', error);
+    await t.rollback(); // Rollback transaction if error occurs
   }
-
-  // Ensure user's balance is a valid number before updating it
-  const currentBalance = parseFloat(user.balance);
-  console.log('User balance before update:', currentBalance, 'Type:', typeof currentBalance);
-
-  if (isNaN(currentBalance)) {
-    console.error('User balance is NaN, unable to proceed.');
-    return;
-  }
-
-  // Adjust the user's balance based on the transaction types
-  if (previousTransaction.transactionType === 'Credit') {
-    console.log('Previous transaction was Credit, deducting from user balance:', previousAmount);
-    user.balance = currentBalance - previousAmount;
-  } else if (previousTransaction.transactionType === 'Debit') {
-    console.log('Previous transaction was Debit, adding to user balance:', previousAmount);
-    user.balance = currentBalance + previousAmount;
-  }
-
-  // Adjust the balance for the new transaction
-  if (transaction.transactionType === 'Credit') {
-    console.log('Updated transaction is Credit, adding to user balance:', updatedAmount);
-    user.balance = user.balance + updatedAmount;
-  } else if (transaction.transactionType === 'Debit') {
-    console.log('Updated transaction is Debit, deducting from user balance:', updatedAmount);
-    user.balance = user.balance - updatedAmount;
-  }
-
-  // Log the final user balance before saving
-  console.log('User balance after transaction update:', user.balance);
-
-  // Ensure the user balance is a valid number before saving
-  if (isNaN(user.balance)) {
-    console.error('Final user balance is NaN, aborting save.');
-    return;
-  }
-
-  await user.save();
 });
 
 module.exports = Transaction;

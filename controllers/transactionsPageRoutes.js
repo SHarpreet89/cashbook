@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 router.get('/', async (req, res) => {
   try {
     if (req.session.logged_in) {
-      console.log('Fetching transactions for user:', req.session.user_id);
+      //console.log('Fetching transactions for user:', req.session.user_id);
 
       const transactions = await Transaction.findAll({
         where: { user_id: req.session.user_id },
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
         order: [['date', 'DESC']],
       });
 
-      console.log('Transactions fetched:', transactions);
+      //console.log('Transactions fetched:', transactions);
 
       const categories = await Category.findAll({
         where: {
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
         attributes: ['id', 'name'],
       });
 
-      console.log('Categories fetched:', categories.map(c => c.get({ plain: true })));
+      //console.log('Categories fetched:', categories.map(c => c.get({ plain: true })));
 
       const transactionsWithCategory = transactions.map((transaction) => ({
         id: transaction.id,
