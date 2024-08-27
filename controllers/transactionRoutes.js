@@ -1,30 +1,42 @@
 const express = require('express');
 const router = express.Router();
-const { Transaction, User } = require('../models'); // Ensure Transaction and User models are imported
+const { Transaction, Category } = require('../models'); 
+const { Op } = require('sequelize'); // Make sure to import Op for query operations
 
 // Route to render the transactions page
 router.get('/', async (req, res) => {
   try {
     if (req.session.logged_in) {
+      console.log('Fetching transactions for user:', req.session.user_id);
+
       // Fetch user's transactions
       const transactions = await Transaction.findAll({
         where: { user_id: req.session.user_id },
         order: [['date', 'DESC']],
       });
 
-      // Fetch categories from the /categories route
-      const categoryResponse = await fetch('/categories', { method: 'GET' });
-      const categories = await categoryResponse.json();
+      console.log('Transactions fetched:', transactions);
+
+      // Fetch categories for the logged-in user
+      const categories = await Category.findAll({
+        where: {
+          [Op.or]: [{ global: true }, { user_id: req.session.user_id }],
+        },
+        attributes: ['id', 'name'], 
+      });
+
+      console.log('Categories fetched:', categories);
 
       res.render('transactions', {
         transactions: transactions.map((t) => t.get({ plain: true })),
-        categories: categories,
+        categories: categories.map((c) => c.get({ plain: true })),
         loggedIn: true,
       });
     } else {
       res.redirect('/');
     }
   } catch (err) {
+    console.error('Error in fetching transactions and categories:', err);
     res.status(500).json(err);
   }
 });
@@ -32,31 +44,42 @@ router.get('/', async (req, res) => {
 // Route to add a new transaction
 router.post('/add', async (req, res) => {
   try {
-    if (req.session.logged_in) {
-      const { name, amount, date, category_id, transactionType, recurringTransaction } = req.body;
-
-      // Create the new transaction
-      const transaction = await Transaction.create({
-        user_id: req.session.user_id,
-        name,
-        amount,
-        date,
-        category_id,
-        transactionType,
-        recurringTransaction
-      });
-
-      // Update the user's balance
-      const user = await User.findByPk(req.session.user_id);
-      user.balance += transactionType === 'Credit' ? amount : -amount;
-      await user.save();
-
-      res.status(200).json(transaction);
-    } else {
-      res.status(401).json({ message: 'Please log in to add a transaction' });
+    // Validate that the user is logged in
+    if (!req.session.user_id) {
+      return res.status(401).json({ message: 'User not authenticated' });
     }
+
+    // Validate incoming data
+    const { name, amount, date, category_id, transactionType, recurringTransaction } = req.body;
+    
+    if (!name || !amount || !date || !category_id || !transactionType) {
+      return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+
+    // Ensure transactionType is either 'Credit' or 'Debit'
+    if (transactionType !== 'Credit' && transactionType !== 'Debit') {
+      return res.status(400).json({ message: 'Invalid transaction type' });
+    }
+
+    // Prepare the transaction data
+    const transactionData = {
+      user_id: req.session.user_id,
+      name,
+      amount,
+      date,
+      category_id, // Should be an integer
+      transactionType,
+      recurringTransaction: recurringTransaction || false,
+      note_id: null // Set to null if not provided, or adjust logic as needed
+    };
+
+    // Create the transaction in the database
+    const newTransaction = await Transaction.create(transactionData);
+
+    res.status(200).json({ message: 'Transaction added successfully!', newTransaction });
   } catch (err) {
-    res.status(500).json(err);
+    console.error('Transaction creation failed:', err);
+    res.status(500).json({ message: 'Failed to add transaction.', error: err });
   }
 });
 
