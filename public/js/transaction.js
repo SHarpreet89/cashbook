@@ -20,20 +20,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     categorySelect.innerHTML = '<option value="">Failed to load categories</option>';
   }
 
-  // Attach the form submission event listener to the button
-  document.querySelector('#submit-transaction').addEventListener('click', newFormHandler);
+  // Attach the form submission event listener
+  const form = document.getElementById('add-transaction');
+  form.addEventListener('submit', newFormHandler);
 });
 
 const newFormHandler = async (event) => {
-  event.preventDefault();
+  event.preventDefault(); // Prevent the form from submitting normally
 
   const name = document.querySelector('#transaction-name').value.trim();
   const amount = parseFloat(document.querySelector('#transaction-amount').value);
   const category_id = parseInt(document.querySelector('#transaction-category').value); // Get category_id
   const date = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-  const transactionType = document.querySelector('input[name="transaction-type"]:checked').value; // 'Credit' or 'Debit'
-  const recurringTransaction = document.querySelector('#recurring-checkbox').checked; // Boolean for recurring transaction
+  const transactionType = document.querySelector('#transaction-type').value; // Get value from select box
+  const recurringTransaction = document.querySelector('#recurring-transaction').checked; // Boolean for recurring transaction
 
+  // Ensure all required fields are filled out
   if (name && amount && category_id && transactionType) {
     const response = await fetch(`/transactions/add`, {
       method: 'POST',
