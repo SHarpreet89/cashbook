@@ -1,25 +1,33 @@
-// Array to store all transactions
-let transactions = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-    initializeExpenseChart();
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const transactions = await fetch('/api/transactions').then(res => res.json());
+    console.log('Transactions fetched:', transactions);
+
+    initializeExpenseChart(transactions);
 
     document.getElementById('submit-transaction').addEventListener('click', saveTransaction);
 });
 
-function initializeExpenseChart() {
+function initializeExpenseChart(transactions) {
+    const categories = transactions
+        .map(transaction => transaction.category.name)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+    console.log('Categories fetched:', categories);
+
     const ctx = document.getElementById('expense-chart').getContext('2d');
 
     window.expenseChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [], // Categories
+            labels: categories, // Categories
             datasets: [{
-                label: 'Expenses',
-                data: [], // Expense amounts
-                backgroundColor: [],
-                borderColor: [],
-                borderWidth: 1
+                label: transactions.map(transaction => transaction.category.name), // Category IDs
+                data: transactions.map(transaction => transaction.amount), // Expense amounts
+                backgroundColor: transactions.map(transaction => transaction.transactionType === 'Credit' ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)'),
+                borderColor: transactions.map(transaction => transaction.transactionType === 'Credit' ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'),
+                borderWidth: 2
             }]
         },
         options: {
@@ -27,10 +35,15 @@ function initializeExpenseChart() {
                 y: {
                     beginAtZero: true
                 }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
             }
         }
-    });
-}
+    })
+};
 
 function saveTransaction() {
     const category = document.getElementById('transaction-category').value;
