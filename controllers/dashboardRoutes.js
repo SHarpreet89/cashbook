@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
       // Fetch the user data along with the last 5 transactions and category names
       const user = await User.findByPk(req.session.user_id, {
-        attributes: ['first_name', 'balance'],
+        attributes: ['first_name', 'last_name', 'balance'],
         include: [
           {
             model: Transaction,
@@ -43,6 +43,7 @@ router.get('/', async (req, res) => {
         res.render('dashboard', {
           loggedIn: true,
           first_name: user.first_name,
+          last_name: user.last_name,
           total_balance: user.balance,
           transactions, // Pass the transactions with category names
         });
