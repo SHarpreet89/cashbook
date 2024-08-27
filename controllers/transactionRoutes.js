@@ -6,12 +6,21 @@ const { Transaction, User } = require('../models'); // Ensure Transaction and Us
 router.get('/', async (req, res) => {
   try {
     if (req.session.logged_in) {
+      // Fetch user's transactions
       const transactions = await Transaction.findAll({
         where: { user_id: req.session.user_id },
-        order: [['date', 'DESC']]
+        order: [['date', 'DESC']],
       });
 
-      res.render('transactions', { transactions, loggedIn: true });
+      // Fetch categories from the /categories route
+      const categoryResponse = await fetch('/categories', { method: 'GET' });
+      const categories = await categoryResponse.json();
+
+      res.render('transactions', {
+        transactions: transactions.map((t) => t.get({ plain: true })),
+        categories: categories,
+        loggedIn: true,
+      });
     } else {
       res.redirect('/');
     }

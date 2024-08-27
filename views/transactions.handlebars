@@ -1,7 +1,7 @@
 <main class="container">
     <section class="row">
         <article class="col-12">
-            <div class="card"> {{!-- Do we need the main container in each handlebar? Or is just the div container enough? --}}
+            <div class="card">
                 <h2>Add Transaction</h2>
                 <form id="add-transaction">
                     <div>
@@ -19,63 +19,50 @@
                     <div>
                         <label for="transaction-category">Category:</label>
                         <select id="transaction-category">
-                            {{#each categories}}
-                            <option value="{{this.name}}">{{this.name}}</option>
-                            {{/each}}
+                            <option value="">Loading categories...</option> <!-- Placeholder until categories are fetched -->
                         </select>
                     </div>
+<<<<<<< HEAD
+=======
                     {{!-- Recurring transaction checkbox
                     <div>
                         <input type="checkbox" id="recurring-transaction" name="recurring" value="recurring">
                         <label for="recurring-transaction">Transaction is recurring</label>
                     </div> --}}
+>>>>>>> main
                 </form>
             </div>
         </article>
     </section>
-    <section class="row">
-        <article class="col-12">
-            <div class="card">
-                <h2>Transaction Notes</h2>
-                <form id="transaction-notes-form">
-                    <div class="form-group">
-                        <label for="transaction-notes">Add a note:</label>
-                        <input type="text" id="transaction-notes" placeholder="Enter the transaction notes">
-                    </div>
-                </form>
-            </div>
-        </article>
-    </section>
-
+    
     <section class="row">
         <article class="col-12">
             <div id="submit-btn" class="flex">
-            <button type="submit" id="submit-transaction" value="Submit Transaction">Submit</button>
+                <button type="submit" id="submit-transaction" value="Submit Transaction">Submit</button>
             </div>
         </article>
     </section>
 
     <section>
         <div class="card">
-        <h2>Transaction History</h2>
-        <ul>
-            {{#each transaction}}
-            <li>
-                <section class="row">
-                    <article class="col-6">
-                        <p>Name: {{transaction.name}}</p>
-                        <p>Category: {{transaction.category}}</p>
-                    </article>
-                    <article class="col-6">
-                        <p>Amount: {{transaction.amount}}</p>
-                        <p>Date: {{transaction.date}}</p>
-                    </article>
-                </section>
-            </li>
-            {{/each}}
-        </ul>
+            <h2>Transaction History</h2>
+            <ul>
+                {{#each transaction}}
+                <li>
+                    <section class="row">
+                        <article class="col-6">
+                            <p>Name: {{transaction.name}}</p>
+                            <p>Category: {{transaction.category}}</p>
+                        </article>
+                        <article class="col-6">
+                            <p>Amount: {{transaction.amount}}</p>
+                            <p>Date: {{transaction.date}}</p>
+                        </article>
+                    </section>
+                </li>
+                {{/each}}
+            </ul>
         </div>
     </section>
-    <script src="public/js/transaction.js"></script>
-    <script src="public/js/transaction-chart.js"></script>
+    <script src="/js/transaction.js"></script>
 </main>
