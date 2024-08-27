@@ -1,5 +1,5 @@
 <main class="container">
-    <section class="row" style="width: 75%;">
+    <section class="row">
         <article class="col-12">
             <div class="card"> {{!-- Do we need the main container in each handlebar? Or is just the div container enough? --}}
                 <h2>Add Transaction</h2>
@@ -25,13 +25,13 @@
             </div>
         </article>
     </section>
-    <section class="row" style="width: 75%;">
+    <section class="row">
         <article class="col-12">
             <div class="card">
                 <h2>Transaction Notes</h2>
                 <form id="transaction-notes-form">
                     <div class="form-group">
-                        <label for="transaction-notes">Notes:</label>
+                        <label for="transaction-notes">Add a note:</label>
                         <input type="text" id="transaction-notes" placeholder="Enter the transaction notes">
                     </div>
                 </form>
@@ -39,15 +39,16 @@
         </article>
     </section>
 
-    <section class="row" style="width: 50%; margin-top: 20px;">
+    <section class="row">
         <article class="col-12">
-            <div>
-            <input type="submit" id="submit-transaction" value="Submit Transaction">
+            <div id="submit-btn" class="flex">
+            <button type="submit" id="submit-transaction" value="Submit Transaction">Submit</button>
             </div>
         </article>
     </section>
 
     <section>
+        <div class="card">
         <h2>Transaction History</h2>
         <ul>
             {{#each transaction}}
@@ -65,6 +66,7 @@
             </li>
             {{/each}}
         </ul>
+        </div>
     </section>
     <script src="public/js/transaction.js"></script>
     <script src="public/js/transaction-chart.js"></script>

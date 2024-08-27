@@ -114,13 +114,14 @@ h2 {
     background-color: #555;
 }
 
-button {
+button#submit-transaction {
     padding: 10px;
     background-color: #333;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 12px;
 }
 
 button:hover {
