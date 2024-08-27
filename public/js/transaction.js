@@ -19,20 +19,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const categorySelect = document.getElementById('transaction-category');
     categorySelect.innerHTML = '<option value="">Failed to load categories</option>';
   }
+
+  // Attach the form submission event listener to the button
+  document.querySelector('#submit-transaction').addEventListener('click', newFormHandler);
 });
 
 const newFormHandler = async (event) => {
   event.preventDefault();
 
-<<<<<<< HEAD
   const name = document.querySelector('#transaction-name').value.trim();
   const amount = parseFloat(document.querySelector('#transaction-amount').value);
   const category_id = parseInt(document.querySelector('#transaction-category').value); // Get category_id
   const date = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-  const transactionType = document.querySelector('input[name="transaction-type"]:checked').value; // Incoming or outgoing
+  const transactionType = document.querySelector('input[name="transaction-type"]:checked').value; // 'Credit' or 'Debit'
   const recurringTransaction = document.querySelector('#recurring-checkbox').checked; // Boolean for recurring transaction
 
-  if (name && amount && category_id) {
+  if (name && amount && category_id && transactionType) {
     const response = await fetch(`/transactions/add`, {
       method: 'POST',
       body: JSON.stringify({
@@ -40,7 +42,7 @@ const newFormHandler = async (event) => {
         amount,
         date,
         category_id,
-        transactionType,
+        transactionType, // Should now be 'Credit' or 'Debit'
         recurringTransaction
       }),
       headers: { 'Content-Type': 'application/json' },
@@ -55,26 +57,3 @@ const newFormHandler = async (event) => {
     alert('Please fill out all required fields.');
   }
 };
-
-document.querySelector('#submit-transaction').addEventListener('click', newFormHandler);
-=======
-  const name = document.querySelector('textarea[id="transaction-name"]').value;
-  const amount = document.querySelector('number[id="transaction-amount"]').value;
-  const categoryid = document.querySelector('select[id="transaction-category"]').value;
-  const type = document.querySelector('textarea[id="transaction-type"]').value;
-
-  await fetch(`/transactions/add`, {
-    method: 'POST',
-    body: JSON.stringify({
-      name,
-      amount,
-      date,
-      categoryid,
-      type,
-    }),
-    headers: { 'Content-Type': 'application/json' },
-  });
-  document.location.replace('/dashboard');
-};
-document.querySelector('#submit-transaction').addEventListener('submit', newFormHandler);
->>>>>>> main
