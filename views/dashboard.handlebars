@@ -7,21 +7,38 @@
                 </div>
             </form>
             <div>
-                <h2>Total Balance</h2>
+                <h2 class="text-xl py-2 underline">Total Balance</h2>
                 <p>{{total_balance}}</p>  <!-- Ensure total_balance is passed correctly -->
             </div>
             <div>
-                <h2>Transaction History</h2>
-                <ul>
+                <h2 class="text-xl py-2 underline">Transaction History</h2>
+                <ul class="transaction-list">
                     {{#each transactions}}
                         <li>
                             {{this.name}} - ${{this.amount}} - {{this.transactionType}} - {{this.categoryName}} - {{this.date}}
                         </li>
+
+                        {{!-- <table>
+                            <tr>
+                                <th>Transaction Name</th>
+                                <th>Amount</th>
+                                <th>Transaction Type</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                            </tr>
+                            <tr>
+                                <td>{{this.name}}</td>
+                                <td>{{this.amount}}</td>
+                                <td>{{this.transactionType}}</td>
+                                <td>{{this.categoryName}}</td>
+                                <td>{{this.date}}</td>
+                            </tr>
+                        </table> --}}
                     {{/each}}
                 </ul>
             </div>
             <div>
-                <h2>Transaction Graph</h2>
+                <h2 class="text-xl py-2 underline">Transaction Graph</h2>
                 <section class="row" style="width: 100%; margin-top: 20px;">
                     <article class="col-12">
                         <canvas id="expense-chart"></canvas>

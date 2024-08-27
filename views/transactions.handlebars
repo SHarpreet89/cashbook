@@ -2,17 +2,17 @@
     <section class="row">
         <article class="col-12">
             <div class="card">
-                <h2>Add Transaction</h2>
+                <h2 class="text-xl py-2 underline">Add Transaction</h2>
                 <form id="add-transaction">
-                    <div>
+                    <div class="form-section">
                         <label for="transaction-name">Name:</label>
                         <input type="text" id="transaction-name" placeholder="Enter transaction name" required>
                     </div>
-                    <div>
+                    <div class="form-section">
                         <label for="transaction-amount">Amount:</label>
                         <input type="number" id="transaction-amount" placeholder="Enter transaction amount" step="0.01" required>
                     </div>
-                    <div>
+                    <div class="form-section">
                         <label for="transaction-type">Transaction Type:</label>
                         <select id="transaction-type" required>
                             <option value="">Select type...</option>
@@ -20,7 +20,7 @@
                             <option value="Debit">Debit</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="form-section">
                         <label for="transaction-category">Category:</label>
                         <select id="transaction-category" required>
                             {{#if categories.length}}
@@ -33,11 +33,11 @@
                         </select>
                     </div>
                     {{!-- Recurring transaction checkbox --}}
-                    <div>
+                    <div class="form-section">
                         <input type="checkbox" id="recurring-transaction" name="recurring" value="recurring">
                         <label for="recurring-transaction">Transaction is recurring</label>
                     </div>
-                    <div id="submit-btn" class="flex">
+                    <div id="submit-btn" class="flex pt-2">
                         <button type="submit" id="submit-transaction">Submit Transaction</button>
                     </div>
                 </form>
@@ -47,12 +47,12 @@
     
     <section>
         <div class="card">
-            <h2>Transaction History</h2>
-            <ul>
+            <h2 class="text-xl py-2 underline">Transaction History</h2>
+            <ul class="transaction-history">
                 {{#if transactions.length}}
                     {{#each transactions}}
                         <li>
-                            <section class="row">
+                            <section class="row" id="history-row">
                                 <article class="col-6">
                                     <p>Name: {{this.name}}</p>
                                     <p>Category: {{this.categoryName}}</p>
