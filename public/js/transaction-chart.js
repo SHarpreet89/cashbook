@@ -65,11 +65,11 @@ function saveTransaction() {
 function updateExpenseChart(category, amount) {
     const index = expenseChart.data.labels.indexOf(category);
 
-    let backgroundColor = 'rgba(255, 99, 132, 0.2)'; // Red for outgoing
+    let backgroundColor = 'rgba(255, 99, 132, 0.2)'; // Red for Debit
     let borderColor = 'rgba(255, 99, 132, 1)'; 
 
     if (category.toLowerCase() === 'salary') {
-        backgroundColor = 'rgba(75, 192, 192, 0.2)'; // Green for incoming
+        backgroundColor = 'rgba(75, 192, 192, 0.2)'; // Green for Credit
         borderColor = 'rgba(75, 192, 192, 1)'; 
     }
 

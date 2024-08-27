@@ -49,9 +49,9 @@ const seedDatabase = async () => {
           if (!userBalances[user.id]) {
             userBalances[user.id] = 0;
           }
-          if (transaction.transactionType === 'incoming') {
+          if (transaction.transactionType === 'Credit') {
             userBalances[user.id] += parseFloat(transaction.amount);
-          } else if (transaction.transactionType === 'outgoing') {
+          } else if (transaction.transactionType === 'Debit') {
             userBalances[user.id] -= parseFloat(transaction.amount);
           }
         }

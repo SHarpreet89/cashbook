@@ -39,7 +39,7 @@ router.post('/add', async (req, res) => {
 
       // Update the user's balance
       const user = await User.findByPk(req.session.user_id);
-      user.balance += transactionType === 'incoming' ? amount : -amount;
+      user.balance += transactionType === 'Credit' ? amount : -amount;
       await user.save();
 
       res.status(200).json(transaction);
@@ -67,7 +67,7 @@ router.put('/update/:id', async (req, res) => {
 
       // Adjust the balance based on the old and new amounts
       const user = await User.findByPk(req.session.user_id);
-      if (transaction.transactionType === 'incoming') {
+      if (transaction.transactionType === 'Credit') {
         user.balance -= transaction.amount;
       } else {
         user.balance += transaction.amount;
@@ -84,7 +84,7 @@ router.put('/update/:id', async (req, res) => {
       await transaction.save();
 
       // Adjust the balance for the new transaction details
-      if (transaction.transactionType === 'incoming') {
+      if (transaction.transactionType === 'Credit') {
         user.balance += amount;
       } else {
         user.balance -= amount;
@@ -115,7 +115,7 @@ router.delete('/delete/:id', async (req, res) => {
 
       // Update the user's balance before deletion
       const user = await User.findByPk(req.session.user_id);
-      if (transaction.transactionType === 'incoming') {
+      if (transaction.transactionType === 'Credit') {
         user.balance -= transaction.amount;
       } else {
         user.balance += transaction.amount;
