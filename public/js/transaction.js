@@ -3,19 +3,20 @@ const newFormHandler = async (event) => {
 
   const name = document.querySelector('textarea[id="transaction-name"]').value;
   const amount = document.querySelector('number[id="transaction-amount"]').value;
-  const category = document.querySelector('select[id="transaction-category"]').value;
+  const categoryid = document.querySelector('select[id="transaction-category"]').value;
+  const type = document.querySelector('textarea[id="transaction-type"]').value;
 
-  await fetch(`/transactions`, {
+  await fetch(`/transactions/add`, {
     method: 'POST',
     body: JSON.stringify({
       name,
       amount,
-      category,
+      date,
+      categoryid,
+      type,
     }),
     headers: { 'Content-Type': 'application/json' },
   });
-
   document.location.replace('/dashboard');
 };
-
 document.querySelector('#submit-transaction').addEventListener('submit', newFormHandler);
