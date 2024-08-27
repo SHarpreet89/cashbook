@@ -49,7 +49,7 @@ Transaction.init(
       onDelete: 'SET NULL',
     },
     transactionType: {
-      type: DataTypes.ENUM('incoming', 'outgoing'),
+      type: DataTypes.ENUM('Credit', 'Debit'),
       allowNull: false,
     },
     recurringTransaction: {
@@ -70,9 +70,9 @@ Transaction.init(
 Transaction.addHook('afterCreate', async (transaction, options) => {
   const user = await User.findByPk(transaction.user_id);
 
-  if (transaction.transactionType === 'incoming') {
+  if (transaction.transactionType === 'Credit') {
     user.balance += parseFloat(transaction.amount);
-  } else if (transaction.transactionType === 'outgoing') {
+  } else if (transaction.transactionType === 'Debit') {
     user.balance -= parseFloat(transaction.amount);
   }
 
@@ -82,9 +82,9 @@ Transaction.addHook('afterCreate', async (transaction, options) => {
 Transaction.addHook('afterDestroy', async (transaction, options) => {
   const user = await User.findByPk(transaction.user_id);
 
-  if (transaction.transactionType === 'incoming') {
+  if (transaction.transactionType === 'Credit') {
     user.balance -= parseFloat(transaction.amount);
-  } else if (transaction.transactionType === 'outgoing') {
+  } else if (transaction.transactionType === 'Debit') {
     user.balance += parseFloat(transaction.amount);
   }
 
@@ -95,15 +95,15 @@ Transaction.addHook('afterUpdate', async (transaction, options) => {
   const previousTransaction = transaction._previousDataValues;
   const user = await User.findByPk(transaction.user_id);
 
-  if (previousTransaction.transactionType === 'incoming') {
+  if (previousTransaction.transactionType === 'Credit') {
     user.balance -= parseFloat(previousTransaction.amount);
-  } else if (previousTransaction.transactionType === 'outgoing') {
+  } else if (previousTransaction.transactionType === 'Debit') {
     user.balance += parseFloat(previousTransaction.amount);
   }
 
-  if (transaction.transactionType === 'incoming') {
+  if (transaction.transactionType === 'Credit') {
     user.balance += parseFloat(transaction.amount);
-  } else if (transaction.transactionType === 'outgoing') {
+  } else if (transaction.transactionType === 'Debit') {
     user.balance -= parseFloat(transaction.amount);
   }
 
