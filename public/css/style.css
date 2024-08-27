@@ -45,6 +45,7 @@ h2 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    padding-top: 50px;
     box-sizing: border-box;
 }
 
@@ -54,6 +55,7 @@ h2 {
     margin-right: -15px;
     margin-left: -15px;
     justify-content: center;
+    padding-top: 50px;
 }
 
 .col-6 {
@@ -163,4 +165,26 @@ li:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    padding: 10 0 10 0;
+}
+
+.form-section {
+    padding: 5px;
+}
+
+#history-row {
+    padding-top: 10px !important;
+}
+
+.transaction-history {
+    display: flex;
+    flex-direction: column;
 }
