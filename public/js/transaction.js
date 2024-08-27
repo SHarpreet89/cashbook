@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Fetch categories from the server
-    const response = await fetch('/categories');
+    const response = await fetch('/api/categories');
     const categories = await response.json();
 
     // Populate the category dropdown

@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 
       res.render('transactions', {
         transactions: transactionsWithCategory,
-        categories: categories.map((c) => c.get({ plain: true })),
+        categories: categories.map((c) => c.get({ plain: true })),  // This is correct
         loggedIn: true,
       });
     } else {

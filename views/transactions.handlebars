@@ -24,6 +24,7 @@
                         <label for="transaction-category">Category:</label>
                         <select id="transaction-category" required>
                             {{#if categories.length}}
+                                <p>Categories loaded: {{categories.length}}</p>
                                 {{#each categories}}
                                     <option value="{{this.id}}">{{this.name}}</option>
                                 {{/each}}
