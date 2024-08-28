@@ -199,6 +199,7 @@ form {
     flex-direction: column;
 }
 
+
 #trans-graph {
     display: flex;
     flex-wrap: wrap;
@@ -206,8 +207,6 @@ form {
     margin-left: -15px;
     justify-content: center;
     padding-top: 10px;
-}
-
 
 /* Modal styles */
 .modal {
