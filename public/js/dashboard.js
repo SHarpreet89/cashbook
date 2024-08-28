@@ -4,6 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click event listener to the button
     addTransactionBtn.addEventListener('click', () => {
         // Redirect to the transactions page
-        window.location.href = '/transactions';
+        window.location.href = '/transactionsPage';
     });
 });

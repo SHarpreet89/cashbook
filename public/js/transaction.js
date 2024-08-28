@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Fetch categories from the server
-    const response = await fetch('/categories');
+    const response = await fetch('/api/categories');
     const categories = await response.json();
 
     // Populate the category dropdown
@@ -37,7 +37,7 @@ const newFormHandler = async (event) => {
 
   // Ensure all required fields are filled out
   if (name && amount && category_id && transactionType) {
-    const response = await fetch(`/transactions/add`, {
+    const response = await fetch(`/api/transactions/add`, {
       method: 'POST',
       body: JSON.stringify({
         name,
