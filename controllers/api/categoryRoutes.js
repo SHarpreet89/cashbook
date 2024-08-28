@@ -29,4 +29,36 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Route to create a new category for the logged-in user
+router.post('/category', async (req, res) => {
+  try {
+    console.log('Creating new category:', req.body);
+    if (req.session.logged_in) {
+      const { name } = req.body;
+
+      if (!name) {
+        return res.status(400).json({ message: 'Category name is required' });
+      }
+
+      const newCategory = await Category.create({
+        name,
+        user_id: req.session.user_id,
+        global: false,
+      });
+
+      res.status(201).json(newCategory);
+    } else {
+      res.status(401).json({ message: 'Please log in to create a category' });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//Test Route
+router.post('/test', (req, res) => {
+  res.json({ message: 'Test route working!' });
+});
+
+
 module.exports = router;

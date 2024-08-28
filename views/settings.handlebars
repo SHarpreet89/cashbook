@@ -1,5 +1,28 @@
-<main class="container"> {{!-- Do we need the main container in each handlebar? Or is just the div container enough? --}}
+<main class="container">
     <section class="row">
-        {{!-- I would like to discuss this one briefly on Monday! --}}
+        <div class="col-12">
+            <div class="card">
+                <h1 style="font-weight: bold; text-decoration: underline;">Category Settings</h1>
+                <form id="category-form">
+                    <div class="form-group">
+                        <label for="existing-categories">Existing Categories:</label>
+                        <select id="existing-categories" size="{{categories.length}}">
+                            {{#each categories}}
+                                <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-category">New Category:</label>
+                        <input type="text" id="new-category" placeholder="Enter new category name">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Add Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
+
+    <script src="/js/settings.js"></script>
 </main>
