@@ -68,16 +68,27 @@ Transaction.init(
 
 // Hooks for updating user balance
 Transaction.addHook('afterCreate', async (transaction, options) => {
-  const user = await User.findByPk(transaction.user_id);
+  try {
+    const user = await User.findByPk(transaction.user_id);
 
-  if (transaction.transactionType === 'Credit') {
-    user.balance += parseFloat(transaction.amount);
-  } else if (transaction.transactionType === 'Debit') {
-    user.balance -= parseFloat(transaction.amount);
+    if (transaction.transactionType === 'Credit') {
+      const newBalance = (parseFloat(user.balance) + parseFloat(transaction.amount)).toFixed(2);
+      console.log(`New Balance (After Credit): ${newBalance}`);
+      user.balance = parseFloat(newBalance);
+    } else if (transaction.transactionType === 'Debit') {
+      const newBalance = (parseFloat(user.balance) - parseFloat(transaction.amount)).toFixed(2);
+      console.log(`New Balance (After Debit): ${newBalance}`);
+      user.balance = parseFloat(newBalance);
+    }
+
+    await user.save();
+
+    console.log(`Final Balance Saved: ${user.balance}`);
+  } catch (error) {
+    console.error('Error updating balance after creating transaction:', error);
   }
-
-  await user.save();
 });
+
 
 Transaction.addHook('afterDestroy', async (transaction, options) => {
   const user = await User.findByPk(transaction.user_id);
@@ -91,23 +102,88 @@ Transaction.addHook('afterDestroy', async (transaction, options) => {
   await user.save();
 });
 
-Transaction.addHook('afterUpdate', async (transaction, options) => {
-  const previousTransaction = transaction._previousDataValues;
-  const user = await User.findByPk(transaction.user_id);
 
-  if (previousTransaction.transactionType === 'Credit') {
-    user.balance -= parseFloat(previousTransaction.amount);
-  } else if (previousTransaction.transactionType === 'Debit') {
-    user.balance += parseFloat(previousTransaction.amount);
+Transaction.addHook('beforeUpdate', async (transaction, options) => {
+  const t = await sequelize.transaction(); // Start a new transaction
+
+  try {
+    // Fetch the user's current balance and the old transaction values before update
+    const previousTransaction = await Transaction.findByPk(transaction.id, { transaction: t });
+    const user = await User.findByPk(transaction.user_id, { transaction: t });
+
+    if (!previousTransaction || !user) {
+      console.error('Could not fetch previous transaction or user data');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    const previousAmount = parseFloat(previousTransaction.amount);
+    const updatedAmount = parseFloat(transaction.amount);
+
+    // Ensure amounts and user balance are valid numbers
+    if (isNaN(previousAmount) || isNaN(updatedAmount)) {
+      console.error('Invalid transaction amounts detected. Previous:', previousAmount, 'Updated:', updatedAmount);
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    let currentBalance = parseFloat(user.balance);
+    if (isNaN(currentBalance)) {
+      console.error('User balance is NaN, unable to proceed.');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    // Logging key details before update
+    console.log('Transaction Edit Start:');
+    console.log(`User Balance Before Edit: ${currentBalance}`);
+    console.log(`Transaction ID: ${transaction.id}`);
+    console.log(`Previous Transaction Type: ${previousTransaction.transactionType}`);
+    console.log(`Previous Transaction Amount: ${previousAmount}`);
+    console.log(`Updated Transaction Type: ${transaction.transactionType}`);
+    console.log(`Updated Transaction Amount: ${updatedAmount}`);
+
+    // Revert the impact of the previous transaction
+    if (previousTransaction.transactionType === 'Credit') {
+      currentBalance -= previousAmount;
+      console.log(`Reverted Previous Credit of ${previousAmount}, New Balance: ${currentBalance}`);
+    } else if (previousTransaction.transactionType === 'Debit') {
+      currentBalance += previousAmount;
+      console.log(`Reverted Previous Debit of ${previousAmount}, New Balance: ${currentBalance}`);
+    }
+
+    // Apply the impact of the updated transaction
+    if (transaction.transactionType === 'Credit') {
+      currentBalance += updatedAmount;
+      console.log(`Applied New Credit of ${updatedAmount}, New Balance: ${currentBalance}`);
+    } else if (transaction.transactionType === 'Debit') {
+      currentBalance -= updatedAmount;
+      console.log(`Applied New Debit of ${updatedAmount}, New Balance: ${currentBalance}`);
+    }
+
+    // Ensure the user balance is a valid number before saving
+    if (isNaN(currentBalance)) {
+      console.error('Final user balance is NaN, aborting save.');
+      await t.rollback(); // Rollback transaction if error occurs
+      return;
+    }
+
+    // Log the final user balance after the transaction edit
+    console.log(`User Balance After Edit: ${currentBalance}`);
+
+    // Set the new balance in the user object and save it
+    user.balance = currentBalance;
+    await user.save({ transaction: t });
+
+    // Commit the transaction
+    await t.commit();
+
+    console.log('Transaction Edit Completed and User Balance Saved');
+
+  } catch (error) {
+    console.error('Error updating user balance after transaction update:', error);
+    await t.rollback(); // Rollback transaction if error occurs
   }
-
-  if (transaction.transactionType === 'Credit') {
-    user.balance += parseFloat(transaction.amount);
-  } else if (transaction.transactionType === 'Debit') {
-    user.balance -= parseFloat(transaction.amount);
-  }
-
-  await user.save();
 });
 
 module.exports = Transaction;

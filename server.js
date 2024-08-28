@@ -8,7 +8,7 @@ const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 
 const sess = {
   secret: 'Super secret secret',
@@ -25,7 +25,10 @@ const sess = {
   })
 };
 
-const hbs = exphbs.create({});
+const hbs = exphbs.create({
+  partialsDir: path.join(__dirname, 'views', 'partials'), // Path to the partials folder
+});
+
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
