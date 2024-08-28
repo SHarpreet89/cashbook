@@ -10,7 +10,7 @@
                     </div>
                     <div class="form-section">
                         <label for="transaction-amount">Amount:</label>
-                        <input type="number" id="transaction-amount" placeholder="Enter transaction amount" step="0.01" required>
+                        <input type="number" id="transaction-amount" step="0.01" placeholder="Enter transaction amount" step="0.01" required>
                     </div>
                     <div class="form-section">
                         <label for="transaction-type">Transaction Type:</label>
@@ -24,15 +24,15 @@
                         <label for="transaction-category">Category:</label>
                         <select id="transaction-category" required>
                             {{#if categories.length}}
+                                <p>Categories loaded: {{categories.length}}</p>
                                 {{#each categories}}
                                     <option value="{{this.id}}">{{this.name}}</option>
                                 {{/each}}
                             {{else}}
-                                <option value="">No categories available</option>
+                                <option value="">Failed to load categories</option>
                             {{/if}}
                         </select>
                     </div>
-                    {{!-- Recurring transaction checkbox --}}
                     <div class="form-section">
                         <input type="checkbox" id="recurring-transaction" name="recurring" value="recurring">
                         <label for="recurring-transaction">Transaction is recurring</label>
@@ -45,6 +45,7 @@
         </article>
     </section>
     
+ <!-- Transaction History Section -->
     <section>
         <div class="card">
             <h2 class="text-xl py-2 underline">Transaction History</h2>
@@ -55,11 +56,12 @@
                             <section class="row" id="history-row">
                                 <article class="col-6">
                                     <p>Name: {{this.name}}</p>
-                                    <p>Category: {{this.categoryName}}</p>
+                                    <p>Category: {{this.categoryName}}</p> <!-- Now shows category name -->
                                 </article>
                                 <article class="col-6">
                                     <p>Amount: ${{this.amount}}</p>
                                     <p>Date: {{this.date}}</p>
+                                    <a href="#" class="edit-transaction" data-transaction-id="{{this.id}}">Edit</a>
                                 </article>
                             </section>
                         </li>
@@ -70,5 +72,10 @@
             </ul>
         </div>
     </section>
+
+    <!-- Include Edit Transaction Modal as a partial -->
+    {{> editTransactionModal}}
+
     <script src="/js/transaction.js"></script>
+    <script src="/js/editTransactionModal.js"></script>
 </main>

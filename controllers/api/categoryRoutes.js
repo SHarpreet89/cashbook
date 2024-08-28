@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Category } = require('../models');
+const { Category } = require('../../models');
 
 // Route to fetch all categories (global and user-specific)
 router.get('/', async (req, res) => {

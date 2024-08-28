@@ -1,41 +1,34 @@
 <main class="container">
     <section class="row">
         <div class="card">
-            <form>
-                <div class="form-group">
-                    <button type="button" id="add-transaction-btn">Add Transaction</button>
-                </div>
-            </form>
             <div>
-                <h2 class="text-xl py-2 underline">Total Balance</h2>
+                <h1 class="text-xl py-2 underline font-bold">Welcome, <span class="user-name">{{first_name}} {{last_name}}</span></h1>
                 <p>{{total_balance}}</p>  <!-- Ensure total_balance is passed correctly -->
             </div>
             <div>
                 <h2 class="text-xl py-2 underline">Transaction History</h2>
-                <ul class="transaction-list">
-                    {{#each transactions}}
-                        <li>
-                            {{this.name}} - ${{this.amount}} - {{this.transactionType}} - {{this.categoryName}} - {{this.date}}
-                        </li>
-
-                        {{!-- <table>
-                            <tr>
-                                <th>Transaction Name</th>
-                                <th>Amount</th>
-                                <th>Transaction Type</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                            </tr>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction Name</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each transactions}}
                             <tr>
                                 <td>{{this.name}}</td>
-                                <td>{{this.amount}}</td>
+                                <td>${{this.amount}}</td>
                                 <td>{{this.transactionType}}</td>
                                 <td>{{this.categoryName}}</td>
                                 <td>{{this.date}}</td>
                             </tr>
-                        </table> --}}
-                    {{/each}}
-                </ul>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
             <div>
                 <h2 class="text-xl py-2 underline">Transaction Graph</h2>
@@ -45,6 +38,13 @@
                     </article>
                 </section>
             </div>
+            <form>
+                <div class="form-group">
+                    <br>
+                    <br>
+                    <button type="button" id="add-transaction-btn">Add Transaction</button>
+                </div>
+            </form>
         </div>
     </section>
 </main>
