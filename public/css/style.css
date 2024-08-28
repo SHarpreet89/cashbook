@@ -78,6 +78,16 @@ h2 {
     margin: 10px;
     box-shadow: 0 4px 8px var(--shadow);
     border-radius: 8px;
+    width: 75vw;
+}
+
+#home-card {
+    background-color: var(--white);
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px var(--shadow);
+    border-radius: 8px;
+    width: 100%;
 }
 
 .about {
@@ -187,6 +197,16 @@ form {
 .transaction-history {
     display: flex;
     flex-direction: column;
+}
+
+
+#trans-graph {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    justify-content: center;
+    padding-top: 10px;
 }
 
 /* Modal styles */
