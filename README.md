@@ -1,7 +1,7 @@
 # Cash-Book
 
 ## Description
-Cast-Book is a simple user friendly web application designed to help you monitor your expenditure. With this application you will be able to add inputs that correlate with your day to day spending and with the inputs that are provided the data would also be displayed through a generative graph as a visual represenation of your spending. You can also add notes to accompany the listed transaction to provide context when looking back at your transaction history. 
+Cash-Book is a simple user friendly web application designed to help you monitor your expenditure. With this application you will be able to add inputs that correlate with your day to day spending and with the inputs that are provided the data would also be displayed through a generative graph as a visual represenation of your spending. You can also add notes to accompany the listed transaction to provide context when looking back at your transaction history. 
 
 
 ## Table of Contents
